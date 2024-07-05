@@ -72,7 +72,7 @@ Available options are:
 
     Sets the style of the CSS-output.
     Can be `compressed` or `expanded`.
-    See the [SASS_REFERENCE](https://sass-lang.com/documentation/cli/dart-sass#style)
+    See the [Sass documentation](https://sass-lang.com/documentation/js-api/types/outputstyle/)
     for details.
 
     Defaults to `expanded`.
@@ -117,17 +117,44 @@ Available options are:
 
     Defaults to `false`.
 
+  * **`fatal_deprecations`**
+
+    An array of deprecations or versions to treat as fatal.
+    If a deprecation warning of any provided type is encountered during compilation, the compiler will error instead.
+    If a version is provided, then all deprecations that were active in that compiler version will be treated as fatal.
+    See the [Sass documentation](https://sass-lang.com/documentation/js-api/interfaces/deprecations/) for all of the
+    deprecations currently used by Sass.
+
+    Defaults to `[]`
+
+  * **`future_deprecations`**
+
+    An array of future deprecations to opt into early.
+    Future deprecations passed here will be treated as active by the compiler, emitting warnings as necessary.
+    See the [Sass documentation](https://sass-lang.com/documentation/js-api/interfaces/deprecations/) for all of the
+    deprecations currently used by Sass.
+
+    Defaults to `[]`
+
+  * **`silence_deprecations`**
+
+    An array of active deprecations to ignore.
+    If a deprecation warning of any provided type is encountered during compilation, the compiler will ignore it instead.
+    See the [Sass documentation](https://sass-lang.com/documentation/js-api/interfaces/deprecations/) for all of the
+    deprecations currently used by Sass.
+
+    Defaults to `[]`
+
 ## Migrate from 2.x to 3.x
 
 Classic GitHub Pages experience still uses [1.x version of jekyll-sass-converter](https://pages.github.com/versions/).
 
 To use latest Jekyll and Jekyll Sass Converter on GitHub Pages,
-[you can now deploy to a GitHub Pages site using GitHub Actions](https://github.blog/changelog/2022-07-27-github-pages-custom-github-actions-workflows-beta/).
+[you can now deploy to a GitHub Pages site using GitHub Actions](https://jekyllrb.com/docs/continuous-integration/github-actions/).
 
 ### Requirements
 
-- Minimum Ruby Version: `Ruby 2.6.0` (all platforms).
-- Minimum Rubygems Version: `3.3.22` (for Linux-based platforms).
+- Minimum Ruby Version: `Ruby 3.1.0` (all platforms).
 
 ### Dropped `implementation` Option
 

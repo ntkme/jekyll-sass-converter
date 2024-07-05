@@ -14,9 +14,9 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").grep(%r!^lib/!)
   spec.require_paths = ["lib"]
 
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 3.1"
 
-  spec.add_runtime_dependency "sass-embedded", "~> 1.54"
+  spec.add_runtime_dependency "sass-embedded", "~> 1.77"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"

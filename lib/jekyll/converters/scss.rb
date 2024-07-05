@@ -13,7 +13,7 @@ require_relative "../source_map_page"
 module Jekyll
   module Converters
     class Scss < Converter
-      EXTENSION_PATTERN = %r!^\.scss$!i.freeze
+      EXTENSION_PATTERN = %r!^\.scss$!i
 
       SyntaxError = Class.new(ArgumentError)
 
@@ -142,8 +142,18 @@ module Jekyll
       end
       # rubocop:enable Metrics/AbcSize
 
+      ALLOWED_OPTIONS = [
+        :alert_ascii,
+        :alert_color,
+        :fatal_deprecations,
+        :future_deprecations,
+        :quiet_deps,
+        :silence_deprecations,
+        :verbose,
+      ].freeze
+
       def sass_configs
-        {
+        configs = {
           :load_paths                 => sass_load_paths,
           :charset                    => !associate_page_failed?,
           :source_map                 => sourcemap_required?,
@@ -151,9 +161,15 @@ module Jekyll
           :style                      => sass_style,
           :syntax                     => syntax,
           :url                        => sass_file_url,
-          :quiet_deps                 => quiet_deps_option,
-          :verbose                    => verbose_option,
         }
+
+        ALLOWED_OPTIONS.each do |name|
+          if jekyll_sass_configuration.key?(name.to_s)
+            configs[name] = jekyll_sass_configuration[name.to_s]
+          end
+        end
+
+        configs
       end
 
       def convert(content)
@@ -172,7 +188,7 @@ module Jekyll
         result
       rescue ::Sass::CompileError => e
         Jekyll.logger.error e.full_message
-        if livereload? && e.respond_to?(:to_css)
+        if livereload?
           e.to_css
         else
           raise SyntaxError, e.message
@@ -274,16 +290,6 @@ module Jekyll
 
       def file_url_from_path(path)
         Addressable::URI.encode("file://#{path.start_with?("/") ? "" : "/"}#{path}")
-      end
-
-      # Returns the value of the `quiet_deps`-option chosen by the user or 'false' by default.
-      def quiet_deps_option
-        !!jekyll_sass_configuration.fetch("quiet_deps", false)
-      end
-
-      # Returns the value of the `verbose`-option chosen by the user or 'false' by default.
-      def verbose_option
-        !!jekyll_sass_configuration.fetch("verbose", false)
       end
     end
   end
